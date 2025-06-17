@@ -3,6 +3,8 @@ import crypto from "crypto";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import nodemailer from "nodemailer";
+import { generateApiKey } from "../utils/generateApiKeys.js";
+import APIKeys from "../model/APIKeys.model.js";
 
 const registerUser = async (req, res) => {
   // get data
@@ -381,6 +383,40 @@ const resetPassword = async (req, res) => {
   }
 };
 
+const generateNewApiKey = async(req, res) => {
+  try {
+    const userId = req.user.id; // Populated from auth middleware
+    const { name, permissions, expiresAt } = req.body;
+
+    
+    if (!name) {
+      return res.status(400).json({ message: "API key name is required" });
+    }
+
+    const apiKey = generateApiKey();
+
+    const newKey = await APIKeys.create({
+      userId,
+      key: apiKey,
+      name,
+      permissions,
+      expiresAt,
+    });
+
+    res.status(201).json({
+      message: "API key generated successfully",
+      apiKey: newKey.key,
+      id: newKey._id,
+      expiresAt: newKey.expiresAt,
+      permissions: newKey.permissions,
+    });
+
+  } catch (error) {
+    console.error("API key generation error:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+}
+
 export {
   registerUser,
   verifyUser,
@@ -389,4 +425,5 @@ export {
   logoutUser,
   forgotPassword,
   resetPassword,
+  generateNewApiKey
 };
