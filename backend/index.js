@@ -7,6 +7,7 @@ import db from "./utils/db.js";
 // import all routes
 import userRoutes from "./routes/user.routes.js";
 import bookRoutes from "./routes/books.routes.js";
+import orderRoutes from "./routes/order.route.js";
 
 
 dotenv.config();
@@ -47,6 +48,7 @@ db();
 //user routes
 app.use("/api/v1/users", userRoutes);
 app.use("/api/v1/books", bookRoutes);
+app.use("/api/v1/order", orderRoutes);
 
 app.listen(port, () => {
     console.log(`Server running on port ${port}`)
