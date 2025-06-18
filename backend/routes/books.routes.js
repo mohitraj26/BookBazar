@@ -1,5 +1,5 @@
 import express from "express";
-import { addBooks, deleteBook, getAllBooks, getBooksById, updateBook } from "../controller/books.controller.js";
+import { addBooks, addReview, deleteBook, deleteReview, getAllBooks, getBooksById, getReviews, updateBook } from "../controller/books.controller.js";
 import { protect } from "../middleware/auth.middleware.js";
 import { isAdmin } from "../middleware/isAdmin.js";
 
@@ -10,5 +10,8 @@ bookRoutes.get("/get-books", getAllBooks);
 bookRoutes.get("/get-book/:id", getBooksById);
 bookRoutes.put("/update-book/:id", protect, isAdmin, updateBook);
 bookRoutes.delete("/delete-book/:id", protect, isAdmin, deleteBook);
+bookRoutes.post("/:id/add-reviews", protect, addReview);
+bookRoutes.get("/:id/get-reviews", getReviews);
+bookRoutes.delete("/delete-reviews/:id", protect, isAdmin, deleteReview);
 
 export default bookRoutes;

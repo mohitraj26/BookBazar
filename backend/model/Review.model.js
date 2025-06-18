@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose ,{ Schema } from "mongoose";
 
 const reviewSchema = new mongoose.Schema({
     bookId: { type: Schema.Types.ObjectId, ref: 'Book', required: true },
@@ -10,4 +10,6 @@ const reviewSchema = new mongoose.Schema({
     timestamps: true
 })
 
-export default mongoose.model("Review", reviewSchema);
+const Review = mongoose.model("Review", reviewSchema);
+
+export default Review
