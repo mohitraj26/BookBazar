@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, {Schema} from "mongoose";
 
 const paymentSchema = new mongoose.Schema({
     orderId: { type: Schema.Types.ObjectId, ref: 'Order', required: true },
@@ -18,4 +18,5 @@ const paymentSchema = new mongoose.Schema({
     timestamps: true
 })
 
-export default mongoose.model("Payment", paymentSchema);
+const Payment = mongoose.model("Payment", paymentSchema);
+export default Payment
