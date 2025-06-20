@@ -7,6 +7,15 @@ export const verifyApiKey = async (req, res, next) => {
   const keyRecord = await APIKeys.findOne({ key: apiKey, isActive: true });
   if (!keyRecord) return res.status(403).json({ error: "Invalid API key" });
 
+  // Check for expiration
+  if (keyRecord.expiresAt && new Date() > keyRecord.expiresAt) {
+    return res.status(403).json({ error: "API key has expired" });
+  }
+
+  // Optionally update `lastUsed`
+  keyRecord.lastUsed = new Date();
+  await keyRecord.save();
+  
   req.apiKey = keyRecord;
   next();
 };
